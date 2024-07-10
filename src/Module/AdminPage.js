@@ -6,7 +6,6 @@ import Row from 'react-bootstrap/Row';
 import * as formik from 'formik';
 import * as yup from 'yup';
 import { useState } from 'react';
-import Demo from './Demo';
 
 function AdminPage() {
   const { Formik } = formik;
@@ -18,36 +17,62 @@ function AdminPage() {
     meals: yup.string().required(),
     propertyType: yup.string().required(),
     facilities: yup.array().required().min(1),
+    place: yup.string().required(),
+    placeType: yup.string().required(),
 
+    // image: yup.mixed().required(), // Add validation for the image file
   });
 
-  const [adminData, setAdminData] = useState(null);
+  // const [adminData, setAdminData] = useState(null);
+  const [imageFile, setImageFile] = useState(""); // State to hold the selected image file
+
+  const handleSubmit = (values, { setSubmitting }) => {
+    // try {
+      const formData = new FormData();
+      formData.append('hotelName', values.hotelName);
+      formData.append('grade', values.grade);
+      formData.append('distance', values.distance);
+      formData.append('meals', values.meals);
+      formData.append('propertyType', values.propertyType);
+      formData.append('facilities', JSON.stringify(values.facilities));
+      formData.append('image', imageFile); // Append the image file to the form data
+      formData.append('place', values.place);
+      formData.append('placeType', values.placeType);
 
 
-  const handleSubmit = async (values, { setSubmitting }) => {
-    try {
-      const response = await fetch("http://localhost:8080/adminpage/store", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(values)
-      });
-  
-      if (!response.ok) {
-        throw new Error("Failed to fetch the data");
-      }
-  
-      const data = await response.json();
-      setAdminData(data);
-      alert("Stored Successfully!");
-    } catch (error) {
-      console.error("Error:", error);
-    } finally {
-      setSubmitting(false);
+      fetch("http://localhost:8080/file/uploadHotels", {
+          method: "POST",
+          // headers: {
+          //   "Content-Type": "application/json"
+          // },
+          body: formData,
+          dataType:"jsonp"
+        })
+        .then(response => {
+          console.log("Data Received" + response);
+          alert("Datas have been stored")
+        })
+        .catch ((error) =>{
+            console.error("Error:", error);
+          }) 
+          .finally (() => {
+            setSubmitting(false);
+          })
+    
+      //   if (!response.ok) {
+      //     throw new Error("Failed to fetch the data");
+      //   }
+    
+      //   const data = await response.json();
+      //   setAdminData(data);
+      //   alert("Stored Successfully!");
+      // // }
+      //  catch (error) {
+      //   console.error("Error:", error);
+      // } finally {
+      //   setSubmitting(false);
+      // }
     }
-  };
-  
 
   return (
     <div>
@@ -69,11 +94,15 @@ function AdminPage() {
                 meals: 'Self Catering', // Default meals to Self Catering
                 propertyType: 'Apartment', // Default property type to Apartment
                 facilities: [],
+                image: '', // Initialize image to null
+                place:'',
+                placeType: 'City', // Default grade to Five Star
+
               }}
             >
               {({ handleSubmit, handleChange, setFieldValue, values, errors }) => (
                 <Form noValidate onSubmit={handleSubmit}>
-                <Row className="mb-3">
+                    <Row className="mb-3">
                   <Form.Group 
                     as={Col} 
                     md="4" 
@@ -180,10 +209,6 @@ function AdminPage() {
                       {errors.propertyType}
                     </Form.Control.Feedback>
                   </Form.Group>
-                  <Form.Group as={Col} md="4" controlId="validationFormik07">
-                    <Form.Label>Image</Form.Label>
-                    <Demo />
-                  </Form.Group>
                 </Row>
                 <Row>
                   <Form.Group
@@ -219,11 +244,81 @@ function AdminPage() {
                     </div>
                   </Form.Group>
                 </Row>
-                <div className='text-center p-3'>
-                  <Button type="submit">Store Data</Button>
-                </div>
-              </Form>
-              
+                  <Row className="mb-3">
+                    <Form.Group as={Col} md="4">
+                      <Form.Label>Image</Form.Label>
+                      {/* <Form.Control
+                        type="file"
+                        name="image"
+                        onChange={(event) => {
+                          console.log(event.target.files[0]);
+                          setImageFile(event.target.files[0]);
+                        }}
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {errors.image}
+                      </Form.Control.Feedback> */}
+                      <div>
+                      {imageFile && (
+                        <div>
+                          <img
+                            alt="not found"
+                            width={"250px"}
+                            src={URL.createObjectURL(imageFile)}
+                          />
+                        </div>
+                      )}
+                      <input
+                      type='file'
+                      name='image'
+                      onChange={(event) => {
+                        console.log(event.target.files[0]);
+                        setImageFile(event.target.files[0]);
+                      }}
+                      />
+                      </div>
+                    </Form.Group>
+                    <Form.Group 
+                      as={Col} 
+                      md="4" 
+                      controlId="validationFormik07"
+                      className='position-relative'
+                    >
+                      <Form.Label>Place</Form.Label>
+                      <Form.Control
+                        type="text"
+                        placeholder="Enter place"
+                        name="place"
+                        value={values.place}
+                        onChange={handleChange}
+                        isInvalid={!!errors.place}
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {errors.place}
+                      </Form.Control.Feedback>
+                    </Form.Group>
+                    <Form.Group as={Col} md="4" controlId="validationFormik08">
+                    <Form.Label>Place Type</Form.Label>
+                    <Form.Select 
+                      aria-label="Default select example"
+                      name="placeType"
+                      value={values.placeType}
+                      onChange={handleChange}
+                      isInvalid={!!errors.placeType}
+                    >
+                      <option value="City">City</option>
+                      <option value="Outdoors">Outdoors</option>
+                      <option value="Beach">Beach</option>
+                    </Form.Select>
+                    <Form.Control.Feedback type="invalid">
+                      {errors.placeType}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                  </Row>
+                  <div className='text-center p-3'>
+                    <Button type="submit">Store Data</Button>
+                  </div>
+                </Form>
               )}
             </Formik>
           </div>

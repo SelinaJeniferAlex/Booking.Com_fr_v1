@@ -1,12 +1,12 @@
 import './App.css';
-import {BrowserRouter,Routes, Route} from "react-router-dom"
+import {BrowserRouter,Routes, Route} from "react-router-dom";
 import Register from './Module/Register';
 import Login from './Module/Login';
-import Demo from './Module/Demo'
+import Property from './Module/Property';
+import SearchForm from './Module/SearchForm';
 import AdminPage from './Module/AdminPage';
-import HotelImage from './Module/HotelImage';
-import ImageUpload from './Module/ImageUpload';
-import GetData from './Module/GetData'
+import GetData from './Module/GetData';
+import Home from './Module/Home';
 function App() {
   return (
     <div>
@@ -14,11 +14,11 @@ function App() {
         <Routes>
           <Route path='/reg' element={<Register/>}/>
           <Route path='/log' element={<Login/>}/>
-          <Route path='/demo' element={<Demo/>}/>
+          <Route path='/searchform' element={<SearchForm/>}/>
           <Route path='/admin' element={<AdminPage/>}/>
-          <Route path='/hotelimage' element={<HotelImage/>}/>
-          <Route path='/image' element={<ImageUpload/>}/>
-          <Route path='/getdata' element={<GetData/>}/>
+          <Route path='/getdata' element={<GetData/>}/>   
+          <Route path='/home' element={<Home/>}/>
+          <Route path='/property' element={<Property/>}/>
         </Routes>
       </BrowserRouter>
     </div>

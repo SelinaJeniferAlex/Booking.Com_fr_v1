@@ -14,7 +14,7 @@ function Login() {
 
 
   const schema = yup.object().shape({
-    emailAddress: yup.string().required(),
+    emailAddress: yup.string().matches(/^[a-z]+\d*@gmail\.com$/,'Email is Invalid').required(),
     userPassword: yup.string().required(),
   });
 

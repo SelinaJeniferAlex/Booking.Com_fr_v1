@@ -1,4 +1,4 @@
-/* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap');
 *{
     margin: 0;
     padding: 0;
@@ -15,16 +15,6 @@
     font-size: x-small;
     padding: 15px
 }
-.Enroll-btn:hover
-{
-    background-color: white !important;
-    color: tomato !important;
-}
-.Login-btn:hover
-{
-    background-color: tomato !important;
-    color: white !important;
-}
 .Con-Enroll{
     display: flex;
     justify-content: center;
@@ -38,48 +28,16 @@
     border-radius: 30px;
     /* backdrop-filter: blur(15px); */
 }
-.input-field{
-    position: relative;
+
+@media only screen and (max-width: 425px) {
+    .mobileCenter {
+        text-align: center;
+    }
 }
-.input-box{
-    width: 100%;
-    height: 50px;
-    font-size: 15px;
-    color: #040404;
-    border: none;
-    border-radius: 10px;
-    /* padding: 7px 45px 0 20px; */
-    background: rgba(224, 223, 223, 0.6);
-    backdrop-filter: blur(2px);
-    outline: none;
+@media only screen and (min-width: 426px) {
+    .pos{
+        position:relative;
+        top: -45px;
+    }
 }
-.input-field label{
-    position: absolute;
-    left: 20px;
-    top: 15px;
-    font-size: 15px;
-    transition: .3s ease-in-out;
-}
-.input-box:focus ~ label, .input-box:valid ~ label{
-    top: 2px;
-    font-size: 10px;
-    color: #c12828;
-    font-weight: 500;
-}
-.input-submit{
-    width: 100%;
-    height: 50px;
-    font-size: 15px;
-    font-weight: 500;
-    border: none;
-    border-radius: 10px;
-    background: #bc6202;
-    color: #fff;
-    cursor: pointer;
-    transition: .4s;
-    margin-right: 50px;
-}
-.input-submit:hover{
-    background: #db3e00;
-    box-shadow: 0px 4px 20px rgba(62, 9, 9, 0.32);
-}
+

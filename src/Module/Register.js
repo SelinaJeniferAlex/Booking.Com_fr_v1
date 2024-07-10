@@ -12,7 +12,7 @@ function Register() {
   const navigate = useNavigate();
 
   const schema = yup.object().shape({
-    emailAddress: yup.string().required(),
+    emailAddress: yup.string().matches(/^[a-z]+\d*@gmail\.com$/,'Email is Invalid').required(),
     userName: yup.string().required(),
     userPassword: yup.string().required(),
   });
@@ -38,9 +38,15 @@ function Register() {
       return response.json();
     })
     .then(formData => {
-      console.log("Fetched data:", formData);
-      setFormData(formData);
-      navigate('/log');
+      if(formData == true)
+      {
+        console.log("Fetched data:", formData);
+        setFormData(formData);
+        navigate('/log');
+      }
+      else{
+        alert("Email Address or UserName is already exists")
+      }
     })
     .catch(error => {
       console.error("Error:", error);
