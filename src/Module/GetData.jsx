@@ -47,6 +47,7 @@ function GetData() {
             <th>Image</th>
             <th>Place</th>
             <th>Place Type</th>
+            <th>Action</th>
             {/* Add more columns if needed */}
           </tr>
         </thead>
@@ -68,10 +69,14 @@ function GetData() {
                 ))}
               </td>
 
-              <td><img src={"http://localhost:8080/uploads/"+hotel.image} style={{height:"80px", width:"100%"}}></img></td>
+              <td><img
+                  src={`http://localhost:8080/uploads/HotelImage/${hotel.image}`}
+                  style={{ height: "80px", width: "100%" }}
+                  alt="Hotel"
+                /></td>
               <td>{hotel.place}</td>
               <td>{hotel.placeType}</td>
-              <td><button className='btn btn-danger' onClick={() => deleteProduct(hotel.adminId)}>DELETE</button></td>{/* Render more columns if needed */}
+              <td><button className='btn btn-danger rounded' onClick={() => deleteProduct(hotel.adminId)}>DELETE</button></td>{/* Render more columns if needed */}
             </tr>
           ))}
         </tbody>

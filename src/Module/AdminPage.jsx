@@ -6,6 +6,7 @@ import Row from 'react-bootstrap/Row';
 import * as formik from 'formik';
 import * as yup from 'yup';
 import { useState } from 'react';
+import AdminLayout from './Layout/AdminLayout';
 
 function AdminPage() {
   const { Formik } = formik;
@@ -76,11 +77,7 @@ function AdminPage() {
 
   return (
     <div>
-      <ul className="nav justify-content-center p-3" style={{ backgroundColor: "#28387E" }}>
-        <li className="nav-item">
-          <a className="text-decoration-none text-white fs-5 fw-bold" href="#">Booking.Com - Admin Page</a>
-        </li>
-      </ul>
+      <AdminLayout/>
       <Container>
         <Row className="justify-content-md-center">
           <div className='m-5' style={{width:"70%"}}>
