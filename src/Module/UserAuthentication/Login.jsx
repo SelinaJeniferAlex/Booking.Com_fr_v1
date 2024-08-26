@@ -37,6 +37,18 @@ export default function SignIn() {
     password: '',
   });
 
+  const [errors, setErrors] = useState({});
+
+  const validate = () => {
+    let tempErrors = {};
+    tempErrors.userName = formData.userName ? "" : "User Name is required";
+    tempErrors.password = formData.password ? "" : "Password is required";
+
+    setErrors(tempErrors);
+
+    return Object.values(tempErrors).every(x => x === "");
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prevData => ({
@@ -49,25 +61,27 @@ export default function SignIn() {
     event.preventDefault();
     console.log("=================",formData);
   
-    fetch("http://localhost:8080/user/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json"
-      },
-      body: JSON.stringify(formData) // Convert formData to JSON string
-    })
-      .then(response => response.json()) // Assuming the response is JSON
-      .then(data => {
-        console.log("Success:", data);
-        if(data == true)
-          alert("Logged in successfully")
-        else
-          alert("Login failed")
+    if(validate()){
+      fetch("http://localhost:8080/user/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify(formData) // Convert formData to JSON string
       })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+        .then(response => response.json()) // Assuming the response is JSON
+        .then(data => {
+          console.log("Success:", data);
+          if(data == true)
+            alert("Logged in successfully")
+          else
+            alert("Login failed")
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    }
   };
 
   return (
@@ -98,6 +112,9 @@ export default function SignIn() {
               autoComplete="userName"
               onChange={handleInputChange}
               autoFocus
+              inputProps={{ maxLength: 25 }}
+              error={!!errors.userName}
+              helperText={errors.userName}
             />
             <TextField
               margin="normal"
@@ -109,6 +126,9 @@ export default function SignIn() {
               id="password"
               autoComplete="current-password"
               onChange={handleInputChange}
+              inputProps={{ maxLength: 20 }}
+              error={!!errors.password}
+              helperText={errors.password}
             />
             <Button
               type="submit"

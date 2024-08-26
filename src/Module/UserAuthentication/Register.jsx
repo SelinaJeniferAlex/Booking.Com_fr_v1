@@ -11,6 +11,8 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Layout from '../Layout/Layout';
 
 function Copyright(props) {
@@ -29,7 +31,6 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function Demo() {
-
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -37,6 +38,21 @@ export default function Demo() {
     email: '',
     password: '',
   });
+
+  const [errors, setErrors] = useState({});
+
+  const validate = () => {
+    let tempErrors = {};
+    tempErrors.firstName = formData.firstName ? "" : "First Name is required";
+    tempErrors.lastName = formData.lastName ? "" : "Last Name is required";
+    tempErrors.userName = formData.userName ? "" : "User Name is required";
+    tempErrors.email = (/^[^\s@]+@[^\s@]+\.[^\s@]+$/).test(formData.email) ? "" : "Email is not valid";
+    tempErrors.password = formData.password.length > 5 ? "" : "Password must be at least 6 characters long";
+
+    setErrors(tempErrors);
+
+    return Object.values(tempErrors).every(x => x === "");
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -48,31 +64,34 @@ export default function Demo() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log("=================",formData);
+    if (validate()) {
+      console.log("=================", formData);
   
-    fetch("http://localhost:8080/user/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json"
-      },
-      body: JSON.stringify(formData) // Convert formData to JSON string
-    })
-      .then(response => response.json()) // Assuming the response is JSON
-      .then(data => {
-        console.log("Success:", data);
-        alert("Registered")
-        // Handle success response
+      fetch("http://localhost:8080/user/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify(formData)
       })
-      .catch((error) => {
-        console.error("Error:", error);
-        // Handle error response
-      });
+        .then(response => response.json())
+        .then(data => {
+          console.log("Success:", data);
+          toast.success('Registration Successful');
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          toast.error('Registration Failed');
+        });
+    } else {
+      console.log("Validation failed");
+    }
   };
 
   return (
     <ThemeProvider theme={defaultTheme}>
-        <Layout/>
+      <Layout />
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -101,6 +120,9 @@ export default function Demo() {
                   value={formData.firstName}
                   onChange={handleInputChange}
                   autoFocus
+                  error={!!errors.firstName}
+                  helperText={errors.firstName}
+                  inputProps={{ maxLength: 25 }}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -113,6 +135,9 @@ export default function Demo() {
                   value={formData.lastName}
                   onChange={handleInputChange}
                   autoComplete="family-name"
+                  error={!!errors.lastName}
+                  helperText={errors.lastName}
+                  inputProps={{ maxLength: 25 }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -125,6 +150,9 @@ export default function Demo() {
                   value={formData.userName}
                   onChange={handleInputChange}
                   autoComplete="userName"
+                  error={!!errors.userName}
+                  helperText={errors.userName}
+                  inputProps={{ maxLength: 25 }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -137,6 +165,10 @@ export default function Demo() {
                   value={formData.email}
                   onChange={handleInputChange}
                   autoComplete="email"
+                  error={!!errors.email}
+                  helperText={errors.email}
+                  inputProps={{ maxLength: 40 }}
+
                 />
               </Grid>
               <Grid item xs={12}>
@@ -150,6 +182,9 @@ export default function Demo() {
                   value={formData.password}
                   onChange={handleInputChange}
                   autoComplete="new-password"
+                  error={!!errors.password}
+                  helperText={errors.password}
+                  inputProps={{ maxLength: 20 }}
                 />
               </Grid>
             </Grid>
@@ -172,6 +207,7 @@ export default function Demo() {
         </Box>
         <Copyright />
       </Container>
+      <ToastContainer />
     </ThemeProvider>
   );
 }
