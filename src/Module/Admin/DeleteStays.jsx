@@ -1,9 +1,9 @@
 import React from 'react'
 
-export default function AddStays() {
+export default function DeleteStays() {
   return (
     <div>
-      Addinggggg
+      Deletinggggg
     </div>
   )
 }

@@ -25,7 +25,7 @@ import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutli
 import DriveFileRenameOutlineSharpIcon from "@mui/icons-material/DriveFileRenameOutlineSharp";
 
 // eslint-disable-next-line react/prop-types
-export default function UpdateGames({ search }) {
+export default function UpdateStays({ search }) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -82,7 +82,7 @@ export default function UpdateGames({ search }) {
     });
   }
 
-  function updateGame(id) {}
+  function updateStays(id) {}
 
   if (loading) {
     return (
@@ -250,7 +250,7 @@ export default function UpdateGames({ search }) {
                 <TableCell align="center">
                   <IconButton
                     aria-label="delete"
-                    onClick={() => updateGame(item.gameid)} // Wrap in an arrow function
+                    onClick={() => updateStays(item.gameid)} // Wrap in an arrow function
                   >
                     <DriveFileRenameOutlineSharpIcon />
                   </IconButton>

@@ -8,9 +8,13 @@ import AdminPage from './Module/AdminPage';
 import GetData from './Module/GetData';
 import Home from './Module/Home';
 import Demo from './Module/Demo'
-import MainLayout from './Module/Layout/MainLayout';
-import Layout from './Module/Layout/Layout';
 import Admin from './Module/Admin/Admin';
+import AdminSecurity from './Module/Admin/AdminSecurity';
+import AddStays from './Module/Admin/AddStays';
+import ReadStays from './Module/Admin/ReadStays';
+import UpdateStays from './Module/Admin/UpdateStays';
+import DeleteStays from './Module/Admin/DeleteStays';
+
 function App() {
   return (
     <div>
@@ -24,10 +28,12 @@ function App() {
           <Route path='/' element={<Home/>}/>
           <Route path='/property' element={<Property/>}/>
           <Route path='/demo' element ={<Demo/>}/>
-          <Route path='/mainLayout' element={<MainLayout/>}/>
-          <Route path='/layout' element={<Layout/>}/>
-          <Route path='/admin' element={<Admin/>}/>
-      
+          <Route path='/admin' element={<AdminSecurity/>}/>
+          <Route path='/adminDash' element={<Admin/>}/>
+          <Route path='/admin/create' element={<AddStays/>}/>
+          <Route path='/admin/read' element={<ReadStays/>}/>
+          <Route path='/admin/update' element={<UpdateStays/>}/>
+          <Route path='/admin/delete' element={<DeleteStays/>}/>
         </Routes>
       </BrowserRouter>
     </div>

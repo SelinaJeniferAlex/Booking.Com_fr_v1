@@ -1,9 +1,9 @@
 import React from 'react'
 
-export default function AddStays() {
+export default function ReadStays() {
   return (
     <div>
-      Addinggggg
+      Readinggggggggggg
     </div>
   )
 }
