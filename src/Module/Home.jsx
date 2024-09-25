@@ -10,7 +10,7 @@ function Home() {
   return (
     <div>
       <MainLayout/>
-      <div className="p-4" style={{ backgroundColor: "#003b95" }}>
+      <div className="p-4 mt-5" style={{ backgroundColor: "#003b95" }}>
         <Container>
           <Row>
             <Col sm={8} className='my-3 text-white px-3 py-5 d-flex flex-column justify-content-center align-items-center align-items-sm-start'>

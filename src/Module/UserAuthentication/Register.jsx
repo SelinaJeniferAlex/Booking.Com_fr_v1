@@ -14,6 +14,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Layout from '../Layout/Layout';
+import Swal from 'sweetalert2';
+
 
 function Copyright(props) {
   return (
@@ -62,6 +64,47 @@ export default function Demo() {
     }));
   };
 
+  // const handleSubmit = (event) => {
+  //   event.preventDefault();
+  //   if (validate()) {
+  //     console.log("=================", formData);
+  
+  //     fetch("http://localhost:8080/user/register", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         "Accept": "application/json"
+  //       },
+  //       body: JSON.stringify(formData)
+  //     })
+  //       .then(response => response.json())
+  //       .then(data => {
+  //         console.log("Success:", data);
+  //         // toast.success('Registration Successful');
+  //         Swal.fire({
+  //           icon: 'success',
+  //           title: 'Registeration Successfully',
+  //           text: 'An account has been created successfully',
+  //         });
+  //       })
+  //       .catch((error) => {
+  //         console.error("Error:", error);
+  //         // toast.error('Registration Failed');
+  //         Swal.fire({
+  //           icon: 'error',
+  //           title: 'Registeration Failed',
+  //           text: 'Invalid username or password',
+  //         });
+  //       });
+  //   } else {
+  //     // console.log("Validation failed");
+  //     Swal.fire({
+  //       icon: 'error',
+  //       title: 'Validation Error',
+  //       text: "Something provided as invalid"
+  //     });
+  //   }
+  // };
   const handleSubmit = (event) => {
     event.preventDefault();
     if (validate()) {
@@ -75,20 +118,43 @@ export default function Demo() {
         },
         body: JSON.stringify(formData)
       })
-        .then(response => response.json())
-        .then(data => {
-          console.log("Success:", data);
-          toast.success('Registration Successful');
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-          toast.error('Registration Failed');
+      .then(response => response.text()) // Since your backend returns a plain string for errors, use .text()
+      .then(data => {
+        console.log("Success:", data);
+  
+        if (data === "Username already exists" || data === "Email already exists") {
+          Swal.fire({
+            icon: 'error',
+            title: 'Registration Failed',
+            text: data, // Display the error message from the backend
+          });
+        } else {
+          Swal.fire({
+            icon: 'success',
+            title: 'Registration Successful',
+            text: 'An account has been created successfully.',
+          });
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+  
+        Swal.fire({
+          icon: 'error',
+          title: 'Registration Failed',
+          text: 'An unexpected error occurred. Please try again.',
         });
+      });
     } else {
-      console.log("Validation failed");
+      Swal.fire({
+        icon: 'error',
+        title: 'Validation Error',
+        text: "Please fill out all the fields"
+      });
     }
   };
-
+  
+  
   return (
     <ThemeProvider theme={defaultTheme}>
       <Layout />
@@ -96,7 +162,7 @@ export default function Demo() {
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 12,
+            marginTop: 10,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',

@@ -22,7 +22,7 @@ export default function AdminCrudLayout() {
     };
   return (
     <div>
-        <Navbar collapseOnSelect expand="lg" style={{ backgroundColor: "#003b95" }} className='p-3'>
+        <Navbar collapseOnSelect expand="lg" style={{ backgroundColor: "#003b95" }} className='p-3 fixed-top'>
             <Container>
                 <Navbar.Brand href="#home" className='text-white fs-5 fw-bold'>Booking.Com - Admin</Navbar.Brand>
                 <Navbar.Toggle style={{ backgroundColor: "white", margin:"5px" }} aria-controls="responsive-navbar-nav" />

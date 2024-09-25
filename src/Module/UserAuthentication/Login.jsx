@@ -5,13 +5,15 @@ import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import Link from '@mui/material/Link';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Layout from '../Layout/Layout';
+import Swal from 'sweetalert2';
+
 
 function Copyright(props) {
   return (
@@ -36,6 +38,8 @@ export default function SignIn() {
     userName: '',
     password: '',
   });
+  const navigate = useNavigate();
+
 
   const [errors, setErrors] = useState({});
 
@@ -60,6 +64,7 @@ export default function SignIn() {
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log("=================",formData);
+    localStorage.setItem("userName", formData.userName);
   
     if(validate()){
       fetch("http://localhost:8080/user/login", {
@@ -73,13 +78,24 @@ export default function SignIn() {
         .then(response => response.json()) // Assuming the response is JSON
         .then(data => {
           console.log("Success:", data);
-          if(data == true)
-            alert("Logged in successfully")
-          else
-            alert("Login failed")
+          console.log("UserName",);
+          if(data === true){
+            navigate('/'); // Redirect to home page
+          }
+          else{
+            Swal.fire({
+              icon: 'error',
+              title: 'Login Failed',
+              text: 'Invalid username or password',
+            });
+          }
         })
         .catch((error) => {
-          console.error("Error:", error);
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Something went wrong. Please try again later.',
+          });
         });
     }
   };
